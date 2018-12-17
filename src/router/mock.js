@@ -12,6 +12,24 @@ router.get("/list", (req, res) => {
   const list = require("../mock/list.json");
   res.json(list);
 });
+// 外卖列表 页号从0开始
+router.get("/list/:page", (req, res) => {
+  const PAGE_SIZE = 5;
+  const list = require("../mock/list.json");
+  let { page = 0 } = req.params;
+  let { poilist } = list.data;
+  poilist = poilist.slice(page * PAGE_SIZE, page * PAGE_SIZE + 5);
+  res.json({
+    ...list,
+    data: {
+      ...list.data,
+      page_index: parseInt(page),
+      poi_has_next_page: poilist.length >= PAGE_SIZE,
+      page_size: PAGE_SIZE,
+      poilist
+    }
+  });
+});
 
 //用户评论
 router.get("/comments", (req, res) => {

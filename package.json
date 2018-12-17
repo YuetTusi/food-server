@@ -1,7 +1,7 @@
 {
   "name": "food-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "美团外卖后台数据接口",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/app.js localhost 3000"
