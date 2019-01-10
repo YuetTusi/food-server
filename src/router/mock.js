@@ -59,9 +59,22 @@ router.get("/listparams", (req, res) => {
 });
 
 //订单
-router.get("/orders", (req, res) => {
+router.get("/orders/:page", (req, res) => {
+  const PAGE_SIZE = 5;
   const orders = require("../mock/orders.json");
-  res.json(orders);
+  let { page = 0 } = req.params;
+  let { digestlist } = orders.data;
+  digestlist = digestlist.slice(page * PAGE_SIZE, page * PAGE_SIZE + 5);
+  res.json({
+    ...orders,
+    data: {
+      ...orders.data,
+      page_index: parseInt(page),
+      poi_has_next_page: digestlist.length >= PAGE_SIZE,
+      page_size: PAGE_SIZE,
+      digestlist
+    }
+  });
 });
 
 //餐馆
