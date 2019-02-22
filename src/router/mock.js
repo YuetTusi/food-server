@@ -53,9 +53,25 @@ router.get("/food", (req, res) => {
   res.json(food);
 });
 
-router.get("/listparams", (req, res) => {
+//外卖列表（条件查询）
+router.get("/listparams/:page", (req, res) => {
+  // const listparams = require("../mock/listparams.json");
+  // res.json(listparams);
+  const PAGE_SIZE = 5;
   const listparams = require("../mock/listparams.json");
-  res.json(listparams);
+  let { page = 0 } = req.params;
+  let { poilist } = listparams.data;
+  poilist = poilist.slice(page * PAGE_SIZE, page * PAGE_SIZE + 5);
+  res.json({
+    ...listparams,
+    data: {
+      ...listparams.data,
+      page_index: parseInt(page),
+      poi_has_next_page: poilist.length >= PAGE_SIZE,
+      page_size: PAGE_SIZE,
+      poilist
+    }
+  });
 });
 
 //订单
