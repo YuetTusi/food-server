@@ -37,6 +37,23 @@ router.get("/comments", (req, res) => {
   res.json(comments);
 });
 
+//用户评论 页号从0开始
+router.get("/comments/:page", (req, res) => {
+  const PAGE_SIZE = 5;
+  const list = require("../mock/comments.json");
+  let { page = 0 } = req.params;
+  let { comments } = list.data;
+  comments = comments.slice(page * PAGE_SIZE, page * PAGE_SIZE + 5);
+  res.json({
+    data: {
+      comments,
+      page_index: parseInt(page),
+      poi_has_next_page: comments.length >= PAGE_SIZE,
+      page_size: PAGE_SIZE
+    }
+  });
+});
+
 router.get("/evadata", (req, res) => {
   const evadata = require("../mock/evadata.json");
   res.json(evadata);
